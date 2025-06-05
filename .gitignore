@@ -7,6 +7,7 @@
 *.dll
 *.so
 *.dylib
+uk-bank-holidays
 
 # Test binary, built with `go test -c`
 *.test
