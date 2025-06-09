@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"time"
 
 	"github.com/rtbaker/UkBankHolidays/getbankholidays"
 )
@@ -16,20 +17,21 @@ func main() {
 
 	args := flag.Args()
 
-	if len(args) != 1 {
-		fmt.Printf("No year passed.\n")
-		flag.Usage()
-		os.Exit(1)
+	// Year defaults to current year
+	now := time.Now()
+	year := int64(now.Year())
+
+	if len(args) == 1 {
+		var err error
+		year, err = strconv.ParseInt(args[0], 10, 64)
+
+		if err != nil {
+			fmt.Printf("Error with passed year\n")
+			os.Exit(1)
+		}
 	}
 
-	year, err := strconv.ParseInt(args[0], 10, 64)
-
-	if err != nil {
-		fmt.Printf("Error with passed year\n")
-		os.Exit(1)
-	}
-
-	err = getbankholidays.GetBankHolidays(year, *country)
+	err := getbankholidays.GetBankHolidays(year, *country)
 
 	if err != nil {
 		fmt.Printf("Error: %s\n", err)
