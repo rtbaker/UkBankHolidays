@@ -27,6 +27,19 @@ func (e Event) getYear() int {
 	return t.Year()
 }
 
+func (e Event) formatDate() string {
+	t, err := time.Parse(
+		"2006-01-02",
+		e.Date,
+	)
+
+	if err != nil {
+		return fmt.Sprintf("Error with date: %s", err)
+	}
+
+	return fmt.Sprintf("%d/%d/%d", t.Day(), t.Month(), t.Year())
+}
+
 func (e Event) String() string {
 	return fmt.Sprintf("%s: %s", e.Title, e.Date)
 }

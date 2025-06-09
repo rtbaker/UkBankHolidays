@@ -4,6 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"maps"
+	"os"
+	"text/tabwriter"
 )
 
 func GetBankHolidays(year int64, country string) error {
@@ -40,11 +42,15 @@ func GetBankHolidays(year int64, country string) error {
 func printCountry(data CountryData, year int64) {
 	fmt.Printf("Bank holidays for %s:\n\n", data.Division)
 
+	const format = "%s\t%s\n"
+	tw := new(tabwriter.Writer).Init(os.Stdout, 0, 8, 2, ' ', 0)
+
 	for _, event := range data.Events {
 		if event.getYear() == int(year) {
-			fmt.Printf("%s\n", event)
+			fmt.Fprintf(tw, format, event.Title, event.formatDate())
 		}
 	}
 
+	tw.Flush()
 	fmt.Println()
 }
